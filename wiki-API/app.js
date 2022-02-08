@@ -78,6 +78,61 @@ app.route('/articles/:articleTitle')
                 res.send(err);
             }
         });
+    })
+
+    .put( function (req, res) {
+        Article.updateOne(
+            {
+                title: req.params.articleTitle
+            },
+            {
+                title: req.body.title,
+                content: req.body.content
+            },
+            {
+                overwrite: true
+            },
+            function (err, results) {
+                if(!err) {
+                    res.send("Successful PUT");
+                } else {
+                    res.send(err);
+                }
+            }
+        );
+    })
+
+    .patch( function (req, res) {
+      Article.updateOne(
+          {
+              title: req.params.articleTitle
+          },
+          {
+              $set: req.body
+          },
+          function (err, results) {
+              if(!err) {
+                  res.send("Successfully PATCH");
+              } else {
+                  res.send(err);
+              }
+          }
+      ); 
+    })
+
+    .delete( function(req, res) {
+        Article.deleteOne(
+            {
+                title: req.params.articleTitle
+            },
+            function (err) {
+                if(!err) {
+                    res.send("Successfully Deleted!");
+                } else {
+                    res.send(err);
+                }
+            }
+        );
     });
 
 app.listen(3000, function (){
